@@ -17,9 +17,17 @@
     "url": "https://github.com/sandyboon/project2/issues"
   },
   "homepage": "https://github.com/sandyboon/project2#readme",
-  "dependencies": {},
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mysql2": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "sequelize": "^5.21.10",
+    "sequelize-cli": "^5.5.1"
+  },
   "devDependencies": {
     "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
