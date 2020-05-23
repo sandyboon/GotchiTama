@@ -14,6 +14,10 @@
     ></script>
     <script>
       // call the api to get pets for this user
+      (() =>
+        $.get('/api/pet').then(function (res) {
+          console.log(res);
+        }))();
     </script>
   </body>
 </html>
