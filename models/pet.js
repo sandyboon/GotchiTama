@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
     },
-    healthlevel: {
+    healthLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
     },
-    speedlevel: {
+    speedLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
@@ -72,7 +72,7 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
     },
-    strengthlevel: {
+    strengthLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
