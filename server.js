@@ -29,7 +29,8 @@ app.use(htmlRouter);
 
 // start the server AFTER syncing the database
 // IMPORTANT : remove the force option when done with dev.
-db.sequelize.sync({ force: true }).then(() => {
+// { force: true }
+db.sequelize.sync().then(() => {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);

@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
     healthLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 10,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -36,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
     currentHealthExp: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 50,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -49,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
     speedLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 10,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -62,7 +62,7 @@ module.exports = function (sequelize, DataTypes) {
     currentSpeedExp: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 50,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -75,7 +75,7 @@ module.exports = function (sequelize, DataTypes) {
     strengthLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 10,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -88,7 +88,7 @@ module.exports = function (sequelize, DataTypes) {
     currentStrengthExp: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 50,
       validate: {
         isInt: true,
         isPositive(val) {
@@ -98,7 +98,19 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
     },
-
+    totalLevel: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 30,
+      validate: {
+        isInt: true,
+        isPositive(val) {
+          if (val < 0) {
+            throw new Error('A pet can not have total level less than zero');
+          }
+        },
+      },
+    },
     numberOfBattles: {
       type: DataTypes.INTEGER,
       allowNull: false,

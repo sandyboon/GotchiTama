@@ -6,6 +6,22 @@
     <title>Select Opponent</title>
   </head>
   <body>
+    <nav>
+      <a href="/api/logout">logout</a>
+    </nav>
     <h1>This page should show the list of opponents</h1>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // call the api to get opponents for this user
+      (() =>
+        $.get('/api/getAllOpponents').then(function (res) {
+          console.log(res);
+        }))();
+    </script>
   </body>
 </html>

@@ -10,7 +10,7 @@ htmlRouter.get('/', function (req, res) {
   } else {
     console.log('user not signed in...');
     // user needs to sign in
-    res.sendFile(path.join(__dirname, '../public/signup.html'));
+    res.sendFile(path.join(__dirname, '../public/login.html'));
   }
 });
 
@@ -18,16 +18,24 @@ htmlRouter.get('/viewPet', function (req, res) {
   if (req.user) {
     res.sendFile(path.join(__dirname, '../public/viewPet.html'));
   } else {
-    res.sendFile(path.join(__dirname, '../public/signup.html'));
+    res.sendFile(path.join(__dirname, '../public/login.html'));
   }
 });
 
 htmlRouter.get('/login', function (req, res) {
   // If the user already has an account send them to the members page
   if (req.user) {
-    res.redirect('/');
+    res.redirect('/viewPet');
   }
   res.sendFile(path.join(__dirname, '../public/login.html'));
+});
+
+htmlRouter.get('/selectOpponent', function (req, res) {
+  if (req.user) {
+    res.sendFile(path.join(__dirname, '../public/selectOpponent.html'));
+  } else {
+    res.redirect('/login');
+  }
 });
 
 module.exports = htmlRouter;
