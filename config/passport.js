@@ -29,8 +29,18 @@ passport.use(
             message: 'Incorrect password.',
           });
         }
+
+        dbUser.online = true;
+        dbUser.save().then(function (updateReuslt) {
+          return done(null, dbUser);
+        });
+
+        // db.User.update({ online: true }, { where: { id: dbUser.id } }).then(
+        //   function (updateResult) {
+        //     return done(null, dbUser);
+        //   }
+        // );
         // If none of the above, return the user
-        return done(null, dbUser);
       });
     }
   )
