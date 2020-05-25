@@ -1,144 +1,155 @@
 module.exports = function (sequelize, DataTypes) {
-  const Pet = sequelize.define('Pet', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [1],
-      },
-    },
-    stage: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val <= 0) {
-            throw new Error('Stage should be a positive number');
-          }
+  const Pet = sequelize.define(
+    'Pet',
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1],
         },
       },
-    },
-    healthLevel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 10,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have a negative health');
-          }
+      type: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      stage: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val <= 0) {
+              throw new Error('Stage should be a positive number');
+            }
+          },
         },
       },
-    },
-    currentHealthExp: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 50,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative health');
-          }
+      healthLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 10,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have a negative health');
+            }
+          },
         },
       },
-    },
-    speedLevel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 10,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative speed');
-          }
+      currentHealthExp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 50,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative health');
+            }
+          },
         },
       },
-    },
-    currentSpeedExp: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 50,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative speed experience');
-          }
+      speedLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 10,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative speed');
+            }
+          },
         },
       },
-    },
-    strengthLevel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 10,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative speed');
-          }
+      currentSpeedExp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 50,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative speed experience');
+            }
+          },
         },
       },
-    },
-    currentStrengthExp: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 50,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative speed experience');
-          }
+      strengthLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 10,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative speed');
+            }
+          },
         },
       },
-    },
-    totalLevel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 30,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have total level less than zero');
-          }
+      currentStrengthExp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 50,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative speed experience');
+            }
+          },
         },
       },
-    },
-    numberOfBattles: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative number of battles');
-          }
+      totalLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 30,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have total level less than zero');
+            }
+          },
         },
       },
-    },
+      numberOfBattles: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative number of battles');
+            }
+          },
+        },
+      },
 
-    numberOfBattlesWon: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        isInt: true,
-        isPositive(val) {
-          if (val < 0) {
-            throw new Error('A pet can not have negative number of wins');
-          }
+      numberOfBattlesWon: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          isInt: true,
+          isPositive(val) {
+            if (val < 0) {
+              throw new Error('A pet can not have negative number of wins');
+            }
+          },
         },
       },
     },
-  });
+    {
+      indexes: [{ unique: true, fields: ['UserId'] }],
+    }
+  );
 
   // define association with users
   // define association with pets
