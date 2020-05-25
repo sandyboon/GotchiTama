@@ -51,6 +51,30 @@ apiRouter.post('/api/pet', async function (req, res) {
 });
 
 /**
+ * Rout handler to CREATE a new pet for a given use
+ */
+apiRouter.put('/api/pet', async function (req, res) {
+  if (isUserLoggedIn(req, res)) {
+    try {
+      // check if the user already has a pet.
+      const existingPet = await db.Pet.findOne({
+        where: { UserId: req.user.id },
+      });
+      if (existingPet === null) {
+        res.sendStatus(404);
+      } else {
+        // add user id to pet
+        const updatedPet = await existingPet.update(req.body);
+        res.status(200).json(updatedPet);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: error });
+    }
+  }
+});
+
+/**
  * Route handler for signing up
  */
 apiRouter.post('/api/signup', async function (req, res) {
@@ -62,6 +86,7 @@ apiRouter.post('/api/signup', async function (req, res) {
     });
     res.redirect(307, '/api/login');
   } catch (error) {
+    console.log(error);
     res.status(401).json(error);
   }
 });
