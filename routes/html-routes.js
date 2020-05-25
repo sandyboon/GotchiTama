@@ -48,4 +48,12 @@ htmlRouter.get('/selectOpponent', function (req, res) {
   }
 });
 
+htmlRouter.get('/battleOutcome', function (req, res) {
+  if (req.user) {
+    res.sendFile(path.join(__dirname, '../public/battleOutcome.html'));
+  } else {
+    res.redirect('/login');
+  }
+});
+
 module.exports = htmlRouter;
