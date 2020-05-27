@@ -1,26 +1,9 @@
-/* When the page loads  
-    Start the timer
-    
-    -- hunger , boredom , hunger , boredom
-    -- Last action -- hunger? Bordedom ?
-
-    handleActivity(
-        callHUnger Or CallBordeoom
-    )
-
-    callHunger - 
-    - Update the UI first 
-    - start a time of its own -- 
-    
-    when penalize - reset the timer
-
-
-*/
 const BOREDOM = 'boredom';
 const HUNGER = 'hunger';
 let lastActivity = 'boredom';
 const feedButton = $('#feedButton');
 const playButton = $('#playButton');
+const battleButton = $('#battleButton');
 const healthLevel = $('#healthLevel');
 const speedLevel = $('#speedLevel');
 const strengthLevel = $('#strengthLevel');
@@ -38,6 +21,7 @@ $(document).ready(function () {
   // Attach the event handler to the button
   feedButton.click(feedPet);
   playButton.click(playWithPet);
+  battleButton.click(takeToBattle);
 });
 
 function handleActivitty() {
@@ -59,7 +43,12 @@ function handleHunger() {
   // start the feeding timer
   hungerTimer = setTimeout(reduceHealthPoints, 5000); // timer for feeding -- 5 seconds
   // Change the appearance of the 'feed' button
-  feedButton.disabled = false;
+  // feedButton.disabled = false;
+  feedButton.removeAttr('disabled');
+}
+
+function takeToBattle() {
+  window.location = '/selectOpponent';
 }
 
 function makePetSad() {
@@ -88,7 +77,8 @@ function reduceHealthPoints() {
     petCurrentHealthExp = petCurrentHealthExp - 10;
     currentHealthExp.text(petCurrentHealthExp);
     petIsHungry = false;
-    feedButton.disabled = true;
+    // feedButton.disabled = true;
+    feedButton.attr('disabled', true);
     clearTimeout(hungerTimer);
     sendHealthUpdate(
       petCurrentHealthExp,
@@ -120,7 +110,8 @@ function feedPet() {
   }
 
   // Visually disable the feed button and remove the event listener?
-  feedButton.disabled = true;
+  // feedButton.disabled = true;
+  feedButton.attr('disabled', true);
   // Stop the timer: reduceHealthPoints timer??
   clearTimeout(hungerTimer);
   // Show notification that these things have happened
@@ -165,7 +156,8 @@ function playWithPet() {
   }
 
   // Visually disable the feed button and remove the event listener?
-  playButton.disabled = true;
+  // playButton.disabled = true;
+  playButton.attr('disabled', true);
   // Stop the timer: reduceHealthPoints timer??
   clearTimeout(boredTimer);
   // Show notification that these things have happened
@@ -256,7 +248,8 @@ function handleBoredom() {
   // start the feeding timer
   boredTimer = setTimeout(reduceSpeedPoints, 6000); // timer for feeding -- 5 seconds
   // Change the appearance of the 'feed' button
-  playButton.disabled = false;
+  playButton.removeAttr('disabled');
+  // playButton.disabled = false;
 }
 
 function reduceSpeedPoints() {
@@ -271,7 +264,8 @@ function reduceSpeedPoints() {
     petCurrentSpeedExp = petCurrentSpeedExp - 10;
     currentSpeedExp.text(petCurrentSpeedExp);
     petIsBored = false;
-    playButton.disabled = true;
+    // playButton.disabled = true;
+    playButton.attr('disabled', true);
     clearTimeout(boredTimer);
     sendSpeedUpdate(petCurrentSpeedExp, petCurrentSpeedLevel, petCurrentStage);
     console.log(
