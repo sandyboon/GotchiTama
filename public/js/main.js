@@ -26,6 +26,7 @@ const speedLevel = $('#speedLevel');
 const strengthLevel = $('#strengthLevel');
 const currentHealthExp = $('#currentHealthExp');
 const currentSpeedExp = $('#currentSpeedExp');
+const type = $('#type');
 const stage = $('#stage');
 let petIsHungry = false;
 let petIsBored = false;
@@ -53,10 +54,26 @@ function handleHunger() {
   petIsHungry = true;
   // make UI notification
   alert('Your Pet is Hungry');
+  // change image
+  makePetSad();
   // start the feeding timer
   hungerTimer = setTimeout(reduceHealthPoints, 5000); // timer for feeding -- 5 seconds
   // Change the appearance of the 'feed' button
   feedButton.disabled = false;
+}
+
+function makePetSad() {
+  const newSrc = `/images/pets/colour${type
+    .text()
+    .trim()}-stage${stage.text().trim()}-sad.png`;
+  $('#petImage').attr('src', newSrc);
+}
+
+function makePetHappy() {
+  const newSrc = `/images/pets/colour${type
+    .text()
+    .trim()}-stage${stage.text().trim()}-happy.png`;
+  $('#petImage').attr('src', newSrc);
 }
 
 function reduceHealthPoints() {
@@ -95,6 +112,7 @@ function feedPet() {
 
   petCurrentHealthExp += 15;
   currentHealthExp.text(petCurrentHealthExp);
+  makePetHappy();
   // update the level if required.
   if (moveToNexLevel('health', healthLevel.text(), currentHealthExp.text())) {
     // updat the UI
@@ -139,6 +157,7 @@ function playWithPet() {
 
   petCurrentSpeedExp += 20;
   currentSpeedExp.text(petCurrentSpeedExp);
+  makePetHappy();
   // update the level if required.
   if (moveToNexLevel('speed', speedLevel.text(), currentSpeedExp.text())) {
     // updat the UI
@@ -233,6 +252,7 @@ function handleBoredom() {
   petIsBored = true;
   // make UI notification
   alert('Your Pet is Bored');
+  makePetSad();
   // start the feeding timer
   boredTimer = setTimeout(reduceSpeedPoints, 6000); // timer for feeding -- 5 seconds
   // Change the appearance of the 'feed' button
