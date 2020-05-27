@@ -24,8 +24,9 @@ htmlRouter.get('/viewPet', async function (req, res) {
     });
     if (usersPet === null) {
       res.redirect('/selectPet');
+    } else {
+      res.render('viewPet', { pet: usersPet });
     }
-    res.render('viewPet', { pet: usersPet });
   } else {
     res.sendFile(path.join(__dirname, '../public/login.html'));
   }
