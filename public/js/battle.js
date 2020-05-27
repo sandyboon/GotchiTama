@@ -5,8 +5,13 @@ const attacks = [
   { name: "Lunge", speed: "fast", safety: "dangerous", impact: "strong" },
 ];
 
-const declareWinner = (winner) => {
-  console.log(`The battle is won by ${winner.name}!`);
+const messageDiv = document.getElementById("message");
+const attacksDiv = document.getElementById("attacks");
+
+const message = (text) => {
+  const newMessage = document.createElement("p");
+  newMessage.innerHTML = text;
+  messageDiv.appendChild(newMessage);
 };
 
 const getAvailableAttacks = (pet) => {
@@ -21,53 +26,106 @@ const getAvailableAttacks = (pet) => {
 };
 
 const fight = async () => {
-  // let ourPet = await fetch(someurl);
-  // let opponent = await fetch(someurl);
-  const ourPet = await {
-    name: "Our_Pet",
-    stage: 3,
-    health: 10,
-    strength: 10,
-    speed: 10,
-    strengthExp: 200,
-    healthExp: 200,
-    imageUrl: "some_image.png",
-  };
+  const foo = await fetch("/api/pet");
+  const bar = await foo.json();
+  const ourPet = bar.data;
+
   ourPet.availableAttacks = getAvailableAttacks(ourPet);
-  ourPet.hitpoints = ourPet.health * 10;
+  ourPet.hitpoints = ourPet.healthLevel * 10;
   document.getElementById("our-pet-name").innerHTML = ourPet.name;
-  const ourPetHitpoints = document.getElementById("our-pet-hitpoints");
-  document.getElementById("our-pet-speed").innerHTML = "Speed: " + ourPet.speed;
+  const ourPetHitpoints = document.getElementById("our-pet-health");
+  document.getElementById("our-pet-speed").innerHTML =
+    "Speed: " + ourPet.speedLevel;
   document.getElementById("our-pet-strength").innerHTML =
-    "Strength: " + ourPet.strength;
+    "Strength: " + ourPet.strengthLevel;
+  document
+    .getElementById("myPetImg")
+    .setAttribute("src", `../images/pets/stage${ourPet.stage}-behind.png`);
 
   const opponent = await {
     name: "Other_Pet",
     stage: 3,
-    health: 9,
-    strength: 12,
-    speed: 8,
+    type: 1,
+    healthLevel: 1,
+    strengthLevel: 2,
+    speedLevel: 1,
     strengthExp: 186,
     healthExp: 263,
-    imageUrl: "some_other_image.png",
   };
 
   opponent.availableAttacks = getAvailableAttacks(opponent);
-  opponent.hitpoints = opponent.health * 10;
+  opponent.hitpoints = opponent.healthLevel * 10;
   document.getElementById("other-pet-name").innerHTML = opponent.name;
-  const opponentHipoints = document.getElementById("other-pet-hitpoints");
+  const opponentHipoints = document.getElementById("other-pet-health");
   document.getElementById("other-pet-speed").innerHTML =
-    "Speed: " + opponent.speed;
+    "Speed: " + opponent.speedLevel;
   document.getElementById("other-pet-strength").innerHTML =
-    "Strength: " + opponent.strength;
+    "Strength: " + opponent.strengthLevel;
+  document
+    .getElementById("otherPetImg")
+    .setAttribute(
+      "src",
+      `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
+    );
 
   const refreshHitpoints = () => {
-    opponentHipoints.innerHTML = `HP: ${opponent.hitpoints} / ${
-      opponent.health * 10
-    }`;
-    ourPetHitpoints.innerHTML = `HP: ${ourPet.hitpoints} / ${
-      ourPet.health * 10
-    }`;
+    const opponentHipointsPercentage =
+      opponent.hitpoints > 0 ? (opponent.hitpoints / opponent.health) * 10 : 0;
+    opponentHipoints.setAttribute(
+      "style",
+      `width: ${opponentHipointsPercentage}%;`
+    );
+    const ourPetHitpointsPercentage =
+      ourPet.hitpoints > 0 ? (ourPet.hitpoints / ourPet.healthLevel) * 10 : 0;
+    ourPetHitpoints.setAttribute(
+      "style",
+      `width: ${ourPetHitpointsPercentage}%;`
+    );
+  };
+
+  const declareWinner = (winner) => {
+    setTimeout(() => {
+      messageDiv.innerHTML = null;
+      attacksDiv.innerHTML = null;
+      if (winner === ourPet) {
+        message(`${winner.name} won the battle!`);
+        setTimeout(() => {
+          message(`${winner.name} gained 25 strength experience`);
+        }, 700);
+        document
+          .getElementById("otherPetImg")
+          .setAttribute(
+            "src",
+            `../images/pets/colour${opponent.type}-stage${opponent.stage}-sad.png`
+          );
+        document
+          .getElementById("myPetImg")
+          .setAttribute(
+            "src",
+            `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-happy.png`
+          );
+      } else {
+        message(`Oh no, ${ourPet.name} lost the battle!`);
+        setTimeout(() => {
+          message(`${ourPet.name} lost 10 health experience`);
+        }, 700);
+        document
+          .getElementById("otherPetImg")
+          .setAttribute(
+            "src",
+            `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
+          );
+        document
+          .getElementById("myPetImg")
+          .setAttribute(
+            "src",
+            `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-sad.png`
+          );
+      }
+      setTimeout(() => {
+        attacksDiv.innerHTML = `<a class='button button-primary' href="/">Home</a>`;
+      }, 700);
+    }, 1400);
   };
 
   const battleTurn = (attacker, defender, attack) => {
@@ -102,7 +160,7 @@ const fight = async () => {
 
     // Deactivates the attack buttons once our turn starts
     if (attacker === ourPet) {
-      console.clear();
+      messageDiv.innerHTML = null;
       [...document.getElementsByClassName("attack")].forEach((button) => {
         button.classList.remove("attack-active");
       });
@@ -113,7 +171,7 @@ const fight = async () => {
       ).parentElement.innerHTML;
     }
 
-    console.log(`${attacker.name} uses ${attack.name}`);
+    message(`${attacker.name} uses ${attack.name}`);
 
     // After delay: Check if attacker hurt itself while attempting to attack
     setTimeout(() => {
@@ -123,10 +181,7 @@ const fight = async () => {
           const lostHitpoints = Math.floor(Math.random() * 5) + 1;
           attacker.hitpoints -= lostHitpoints;
           refreshHitpoints();
-          console.log(
-            `${attacker.name} hurt itself for ${lostHitpoints} HP!
-            Its hitpoints are now ${attacker.hitpoints}`
-          );
+          message(`${attacker.name} hurt itself for ${lostHitpoints} HP!`);
         }
       }
 
@@ -135,22 +190,22 @@ const fight = async () => {
         if (attacker.hitpoints < 1) {
           return endTurn(attacker, defender);
         } else {
-          const attackSpeed = attack.speed === "slow" ? 1 : 2;
+          const attackSpeed = attack.speedLevel === "slow" ? 1 : 2;
           const didAttackHit =
             attackSpeed +
-              attacker.speed * Math.random() -
-              defender.speed * Math.random() >
+              attacker.speedLevel * Math.random() -
+              defender.speedLevel * Math.random() >
             0.5;
           if (didAttackHit === false) {
-            console.log(`${defender.name} dodged the attack!`);
+            message(`${defender.name} dodged the attack!`);
           } else {
-            const attackStrength = attack.strength === "weak" ? 3 : 5;
+            const attackStrength = attack.strengthLevel === "weak" ? 3 : 5;
             const attackDamage = Math.floor(
-              attackStrength * Math.random() * attacker.strength + 1
+              attackStrength * Math.random() * attacker.strengthLevel + 1
             );
             defender.hitpoints -= attackDamage;
             refreshHitpoints();
-            console.log(`${defender.name} was hit for ${attackDamage} HP`);
+            message(`${defender.name} was hit for ${attackDamage} HP`);
           }
         }
 
@@ -166,10 +221,10 @@ const fight = async () => {
 
   ourPet.availableAttacks.forEach((attack) => {
     const attackDiv = document.createElement("div");
-    attackDiv.innerHTML = `<h3>${attack.name}</h3><p>${attack.speed}/${attack.safety}/${attack.impact}</p>`;
+    attackDiv.innerHTML = `<h6>${attack.name}</h6><p>${attack.speed} / ${attack.safety} / ${attack.impact}</p>`;
     attackDiv.setAttribute("data-attack", attacks.indexOf(attack));
     attackDiv.classList.add("attack", "attack-active");
-    document.getElementById("attacks").appendChild(attackDiv);
+    attacksDiv.appendChild(attackDiv);
     attackDiv.addEventListener("click", () => {
       battleTurn(ourPet, opponent, attack);
     });

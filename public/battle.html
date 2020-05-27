@@ -3,49 +3,119 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    />
     <title>Battle</title>
     <style>
-      * {
-        font-family: sans-serif;
-      }
-      p {
-        font-size: 1.5rem;
+      p,
+      h5,
+      h6,
+      h4 {
+        margin: 0px;
       }
       .attack {
         background-color: #eee;
         color: #555;
         padding: 8px;
         margin: 4px;
-        border: 1px solid #555;
+        border: 1px solid #999;
+        min-width: 200px;
+        flex-grow: 1;
       }
       .attack-active {
         background-color: white;
         color: black;
         cursor: pointer;
-        border: 1px solid black;
+        border: 1px solid grey;
       }
       .attack-active:hover {
-        border: 1px solid red;
+        border: 1px solid black;
+        background-color: #f3f3f3;
+      }
+      #stats p {
+        margin: 0px;
+      }
+      .healthbar {
+        height: 14px;
+        width: 100px;
+        border: 1px solid black;
+        padding: 2px;
+      }
+      .healthbar-inner {
+        height: 100%;
+        width: 100%;
+        background-color: green;
+        box-sizing: border-box;
+        transition: all 0.3s ease-in-out;
+      }
+      #other-pet-health {
+        float: right;
       }
     </style>
   </head>
   <body>
-    <h1>It's time to battle!</h1>
-    <div id="stats" style="display: flex; justify-content: space-between;">
-      <div>
-        <p id="our-pet-name"></p>
-        <p id="our-pet-hitpoints"></p>
-        <p id="our-pet-speed"></p>
-        <p id="our-pet-strength"></p>
-      </div>
-      <div style="text-align: right;">
-        <p id="other-pet-name"></p>
-        <p id="other-pet-hitpoints"></p>
-        <p id="other-pet-speed"></p>
-        <p id="other-pet-strength"></p>
+    <div class="container">
+      <div class="row">
+        <div id="stats" style="display: flex; justify-content: space-between;">
+          <div>
+            <h4 id="our-pet-name"></h4>
+            <div class="healthbar">
+              <div id="our-pet-health" class="healthbar-inner"></div>
+            </div>
+            <p id="our-pet-speed"></p>
+            <p id="our-pet-strength"></p>
+          </div>
+          <div style="text-align: right;">
+            <h4 id="other-pet-name"></h4>
+            <div class="healthbar" style="text-align: right; float: right;">
+              <div id="other-pet-health" class="healthbar-inner"></div>
+            </div>
+            <p id="other-pet-speed"></p>
+            <p id="other-pet-strength"></p>
+          </div>
+        </div>
+        <div style="height: min(70vw, 55rem); position: relative;">
+          <img
+            id="myPetImg"
+            style="
+              position: absolute;
+              width: min(400px, 45vw);
+              height: auto;
+              left: 0px;
+              bottom: 20px;
+            "
+          />
+          <img
+            id="otherPetImg"
+            style="
+              position: absolute;
+              transform: scaleX(-1);
+              width: min(250px, 25vw);
+              height: auto;
+              right: 0px;
+              top: 20px;
+            "
+          />
+          <img />
+        </div>
+        <div
+          id="message"
+          style="padding: 10px; background-color: #eee; border-radius: 10px;"
+        ></div>
+        <div
+          id="attacks"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+          "
+        ></div>
       </div>
     </div>
-    <div id="attacks"></div>
     <script src="./js/battle.js"></script>
   </body>
 </html>
