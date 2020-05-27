@@ -17,20 +17,26 @@
 
 */
 const BOREDOM = 'boredom';
-const lastActivity = 'boredom';
+const HUNGER = 'hunger';
+let lastActivity = 'boredom';
 const feedButton = $('#feedButton');
+const playButton = $('#playButton');
 const healthLevel = $('#healthLevel');
 const speedLevel = $('#speedLevel');
 const strengthLevel = $('#strengthLevel');
 const currentHealthExp = $('#currentHealthExp');
+const currentSpeedExp = $('#currentSpeedExp');
 const stage = $('#stage');
 let petIsHungry = false;
+let petIsBored = false;
 let hungerTimer;
+let boredTimer;
 
 $(document).ready(function () {
   setInterval(handleActivitty, 10000);
   // Attach the event handler to the button
   feedButton.click(feedPet);
+  playButton.click(playWithPet);
 });
 
 function handleActivitty() {
@@ -43,6 +49,7 @@ function handleActivitty() {
 }
 
 function handleHunger() {
+  lastActivity = HUNGER;
   petIsHungry = true;
   // make UI notification
   alert('Your Pet is Hungry');
@@ -60,7 +67,7 @@ function reduceHealthPoints() {
       petCurrentHealthExp,
       petCurrentHealthLevel,
       petCurrentStage,
-    } = getPetStatsFromUI();
+    } = getPetHealthStatsFromUI();
     petCurrentHealthExp = petCurrentHealthExp - 10;
     currentHealthExp.text(petCurrentHealthExp);
     petIsHungry = false;
@@ -84,7 +91,7 @@ function feedPet() {
     petCurrentHealthExp,
     petCurrentHealthLevel,
     petCurrentStage,
-  } = getPetStatsFromUI();
+  } = getPetHealthStatsFromUI();
 
   petCurrentHealthExp += 15;
   currentHealthExp.text(petCurrentHealthExp);
@@ -121,11 +128,62 @@ function feedPet() {
   });
 }
 
-function getPetStatsFromUI() {
+function playWithPet() {
+  petIsBored = false;
+  // Increase the pet Health EXP by a random amount (10-15)
+  let {
+    petCurrentSpeedExp,
+    petCurrentSpeedLevel,
+    petCurrentStage,
+  } = getPetSpeedStatsFromUI();
+
+  petCurrentSpeedExp += 20;
+  currentSpeedExp.text(petCurrentSpeedExp);
+  // update the level if required.
+  if (moveToNexLevel('speed', speedLevel.text(), currentSpeedExp.text())) {
+    // updat the UI
+    speedLevel.text(++petCurrentSpeedLevel);
+  }
+
+  // Visually disable the feed button and remove the event listener?
+  playButton.disabled = true;
+  // Stop the timer: reduceHealthPoints timer??
+  clearTimeout(boredTimer);
+  // Show notification that these things have happened
+  console.log(
+    `Your Pet's speed Exp. Points is increased to ${petCurrentSpeedExp}`
+  );
+  // make a call to api to update the pet object
+  const movingToNextStage = canMoveToNexStage(getTotalLevel(), petCurrentStage);
+  petCurrentStage = movingToNextStage ? ++petCurrentStage : petCurrentStage;
+  if (movingToNextStage) {
+    stage.text(petCurrentStage);
+  }
+
+  sendSpeedUpdate(
+    petCurrentSpeedExp,
+    petCurrentSpeedLevel,
+    petCurrentStage
+  ).done(function (res) {
+    console.log('Speed updated, moving to next stage...');
+    if (movingToNextStage) {
+      window.location = '/viewPet';
+    }
+  });
+}
+
+function getPetHealthStatsFromUI() {
   const petCurrentHealthExp = parseInt(currentHealthExp.text());
   const petCurrentHealthLevel = parseInt(healthLevel.text());
   const petCurrentStage = parseInt(stage.text());
   return { petCurrentHealthExp, petCurrentHealthLevel, petCurrentStage };
+}
+
+function getPetSpeedStatsFromUI() {
+  const petCurrentSpeedExp = parseInt(currentSpeedExp.text());
+  const petCurrentSpeedLevel = parseInt(speedLevel.text());
+  const petCurrentStage = parseInt(stage.text());
+  return { petCurrentSpeedExp, petCurrentSpeedLevel, petCurrentStage };
 }
 
 function sendHealthUpdate(currentHealthExp, level, stage) {
@@ -145,6 +203,23 @@ function sendHealthUpdate(currentHealthExp, level, stage) {
   });
 }
 
+function sendSpeedUpdate(currentSpeedExp, level, stage) {
+  const totalLevel = getTotalLevel();
+  return $.ajax({
+    url: '/api/pet',
+    type: 'PUT',
+    success: function (response) {
+      console.log('api call succesful');
+    },
+    data: {
+      currentSpeedExp: currentSpeedExp,
+      speedLevel: level,
+      totalLevel: totalLevel,
+      stage: stage,
+    },
+  });
+}
+
 function getTotalLevel() {
   return (
     parseInt(speedLevel.text()) +
@@ -153,7 +228,37 @@ function getTotalLevel() {
   );
 }
 
-function handleBoredom() {}
+function handleBoredom() {
+  lastActivity = BOREDOM;
+  petIsBored = true;
+  // make UI notification
+  alert('Your Pet is Bored');
+  // start the feeding timer
+  boredTimer = setTimeout(reduceSpeedPoints, 6000); // timer for feeding -- 5 seconds
+  // Change the appearance of the 'feed' button
+  playButton.disabled = false;
+}
+
+function reduceSpeedPoints() {
+  // reduce health experience points
+  const petCurrentSpeedExp = parseInt(currentSpeedExp.text());
+  if (petIsBored && petCurrentSpeedExp >= 10) {
+    let {
+      petCurrentSpeedExp,
+      petCurrentSpeedLevel,
+      petCurrentStage,
+    } = getPetSpeedStatsFromUI();
+    petCurrentSpeedExp = petCurrentSpeedExp - 10;
+    currentSpeedExp.text(petCurrentSpeedExp);
+    petIsBored = false;
+    playButton.disabled = true;
+    clearTimeout(boredTimer);
+    sendSpeedUpdate(petCurrentSpeedExp, petCurrentSpeedLevel, petCurrentStage);
+    console.log(
+      `Your Pet's Speed Exp. Points is reduced to ${petCurrentSpeedExp}`
+    );
+  }
+}
 
 function moveToNexLevel(levelType, currentLevel, currentExp) {
   switch (levelType) {
@@ -161,7 +266,7 @@ function moveToNexLevel(levelType, currentLevel, currentExp) {
       return currentExp >= 15 * (currentLevel * 5);
 
     case 'speed':
-      return currentExp >= 20 * ((currentLevel + 1) * 5);
+      return currentExp >= 15 * (currentLevel * 5);
 
     default:
       break;
