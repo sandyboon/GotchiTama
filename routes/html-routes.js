@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const htmlRouter = express.Router();
+const db = require('../models');
 
 htmlRouter.get('/', function (req, res) {
   console.log('request recieved');
@@ -14,9 +15,17 @@ htmlRouter.get('/', function (req, res) {
   }
 });
 
-htmlRouter.get('/viewPet', function (req, res) {
+htmlRouter.get('/viewPet', async function (req, res) {
   if (req.user) {
-    res.sendFile(path.join(__dirname, '../public/viewPet.html'));
+    // res.sendFile(path.join(__dirname, '../public/viewPet.html'));
+    const usersPet = await db.Pet.findOne({
+      raw: true,
+      where: { UserId: req.user.id },
+    });
+    if (usersPet === null) {
+      res.redirect('/selectPet');
+    }
+    res.render('viewPet', { pet: usersPet });
   } else {
     res.sendFile(path.join(__dirname, '../public/login.html'));
   }
@@ -51,6 +60,14 @@ htmlRouter.get('/selectOpponent', function (req, res) {
 htmlRouter.get('/battleOutcome', function (req, res) {
   if (req.user) {
     res.sendFile(path.join(__dirname, '../public/battleOutcome.html'));
+  } else {
+    res.redirect('/login');
+  }
+});
+
+htmlRouter.get('/selectPet', function (req, res) {
+  if (req.user) {
+    res.sendFile(path.join(__dirname, '../public/petSelection.html'));
   } else {
     res.redirect('/login');
   }
