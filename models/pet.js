@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
       healthLevel: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 10,
+        defaultValue: 1,
         validate: {
           isInt: true,
           isPositive(val) {
@@ -43,7 +43,7 @@ module.exports = function (sequelize, DataTypes) {
       currentHealthExp: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 50,
+        defaultValue: 10,
         validate: {
           isInt: true,
           isPositive(val) {
@@ -56,7 +56,7 @@ module.exports = function (sequelize, DataTypes) {
       speedLevel: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 10,
+        defaultValue: 1,
         validate: {
           isInt: true,
           isPositive(val) {
@@ -69,7 +69,7 @@ module.exports = function (sequelize, DataTypes) {
       currentSpeedExp: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 50,
+        defaultValue: 10,
         validate: {
           isInt: true,
           isPositive(val) {
@@ -82,7 +82,7 @@ module.exports = function (sequelize, DataTypes) {
       strengthLevel: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 10,
+        defaultValue: 1,
         validate: {
           isInt: true,
           isPositive(val) {
@@ -95,7 +95,7 @@ module.exports = function (sequelize, DataTypes) {
       currentStrengthExp: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 50,
+        defaultValue: 10,
         validate: {
           isInt: true,
           isPositive(val) {

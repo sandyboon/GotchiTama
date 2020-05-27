@@ -40,6 +40,15 @@ htmlRouter.get('/login', function (req, res) {
   }
 });
 
+htmlRouter.get('/battle', function (req, res) {
+  // If the user already has an account send them to the members page
+  if (req.user) {
+    res.sendFile(path.join(__dirname, '../public/battle.html'));
+  } else {
+    res.sendFile(path.join(__dirname, '../public/login.html'));
+  }
+});
+
 htmlRouter.get('/signup', function (req, res) {
   // If the user already has an account send them to the members page
   if (req.user) {

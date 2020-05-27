@@ -1,4 +1,5 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const session = require('express-session');
 const passport = require('./config/passport');
 const db = require('./models');
@@ -23,6 +24,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// define the views engine
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
 // add the routers
 app.use(apiRouter);
 app.use(htmlRouter);
@@ -30,7 +35,7 @@ app.use(htmlRouter);
 // start the server AFTER syncing the database
 // IMPORTANT : remove the force option when done with dev.
 // { force: true }
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
