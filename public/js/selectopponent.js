@@ -1,5 +1,5 @@
 (async () => {
-  const foo = await fetch("api/getAllOpponents");
+  const foo = await fetch('api/getAllOpponents');
   const bar = await foo.json();
   const opponents = bar.allOpponents;
   console.log(foo);
@@ -43,12 +43,12 @@
   //   },
   // ];
 
-  const opponentsDiv = document.getElementById("opponents");
-  const battleButton = document.getElementById("battle-button");
+  const opponentsDiv = document.getElementById('opponents');
+  const battleButton = document.getElementById('battle-button');
 
   opponents.forEach((opponent) => {
-    const anOpponent = document.createElement("div");
-    anOpponent.classList.add("opponent");
+    const anOpponent = document.createElement('div');
+    anOpponent.classList.add('opponent');
     anOpponent.innerHTML = `<img style="width: 15rem; height: 15rem" src='./images/pets/colour${
       opponent.type
     }-stage${opponent.stage}-happy.png'>
@@ -58,14 +58,14 @@
       opponent.strengthLevel
     } Speed:&nbsp;${opponent.speedLevel}</p></div>`;
     opponentsDiv.appendChild(anOpponent);
-    anOpponent.addEventListener("click", (event) => {
-      const allOpponentsDivs = document.getElementsByClassName("opponent");
+    anOpponent.addEventListener('click', (event) => {
+      const allOpponentsDivs = document.getElementsByClassName('opponent');
       [...allOpponentsDivs].forEach((div) =>
-        div.classList.remove("opponent-active")
+        div.classList.remove('opponent-active')
       );
-      anOpponent.classList.add("opponent-active");
-      battleButton.classList.remove("button-disabled");
-      battleButton.setAttribute("href", `/battle?opponent=${opponent.id}`);
+      anOpponent.classList.add('opponent-active');
+      battleButton.classList.remove('button-disabled');
+      battleButton.setAttribute('href', `/battle?opponent=${opponent.id}`);
     });
   });
 })();
