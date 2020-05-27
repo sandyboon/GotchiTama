@@ -3,13 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Battle</title>
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      p {
+        font-size: 1.5rem;
+      }
+      .attack {
+        background-color: #eee;
+        color: #555;
+        padding: 8px;
+        margin: 4px;
+        border: 1px solid #555;
+      }
+      .attack-active {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        border: 1px solid black;
+      }
+      .attack-active:hover {
+        border: 1px solid red;
+      }
+    </style>
   </head>
   <body>
-    <nav>
-      <a href="/api/logout">logout</a>
-    </nav>
     <h1>It's time to battle!</h1>
+    <div id="stats" style="display: flex; justify-content: space-between;">
+      <div>
+        <p id="our-pet-name"></p>
+        <p id="our-pet-hitpoints"></p>
+        <p id="our-pet-speed"></p>
+        <p id="our-pet-strength"></p>
+      </div>
+      <div style="text-align: right;">
+        <p id="other-pet-name"></p>
+        <p id="other-pet-hitpoints"></p>
+        <p id="other-pet-speed"></p>
+        <p id="other-pet-strength"></p>
+      </div>
+    </div>
     <div id="attacks"></div>
     <script src="./js/battle.js"></script>
   </body>
