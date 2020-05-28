@@ -12,6 +12,7 @@ const currentSpeedExp = $("#currentSpeedExp");
 const type = $("#type");
 const stage = $("#stage");
 const popup = document.getElementById("popup");
+const petImage = document.getElementById("petImage");
 let petIsHungry = false;
 let petIsBored = false;
 let hungerTimer;
@@ -26,6 +27,28 @@ $(document).ready(function () {
   feedButton.attr("disabled", true);
   playButton.attr("disabled", true);
 });
+
+const throwAtPet = (itemType) => {
+  const item = document.createElement("div");
+  item.classList.add("thrown");
+  document.body.appendChild(item);
+
+  const xCoord =
+    petImage.getBoundingClientRect().left +
+    petImage.getBoundingClientRect().width / 3;
+  const yCoord =
+    petImage.getBoundingClientRect().top +
+    petImage.getBoundingClientRect().height / 3;
+
+  item.setAttribute(
+    "style",
+    `top: ${yCoord}px; right: ${xCoord}px; background-image: url('/images/${itemType}.png')`
+  );
+
+  setTimeout(() => {
+    document.body.removeChild(item);
+  }, 1800);
+};
 
 function handleActivity() {
   if (lastActivity === BOREDOM) {
@@ -150,6 +173,7 @@ function reduceHealthPoints() {
 
 function feedPet() {
   petIsHungry = false;
+  throwAtPet("burger");
   console.log(petIsHungry);
   // Increase the pet Health EXP by a random amount (10-15)
   let {
@@ -165,7 +189,7 @@ function feedPet() {
   // update the level if required.
   if (moveToNexLevel("health", healthLevel.text(), currentHealthExp.text())) {
     // updat the UI
-    healthLevel.text(++petCurrentHealthLevel);	
+    healthLevel.text(++petCurrentHealthLevel);
     messageIntoPopup("Your pet increased one health level!");
   }
 
@@ -199,6 +223,7 @@ function feedPet() {
 
 function playWithPet() {
   petIsBored = false;
+  throwAtPet("ball");
   // Increase the pet Health EXP by a random amount (10-15)
   let {
     petCurrentSpeedExp,
