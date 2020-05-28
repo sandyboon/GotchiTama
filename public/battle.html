@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
     />
@@ -88,18 +92,19 @@
               bottom: 20px;
             "
           />
-          <img
-            id="otherPetImg"
+          <div
             style="
               position: absolute;
               transform: scaleX(-1);
               width: min(250px, 25vw);
-              height: auto;
+              height: min(250px, 25vw);
               right: 0px;
               top: 20px;
             "
-          />
-          <img />
+          >
+            <img id="otherPetImg" style="height: 100%;" />
+            <img />
+          </div>
         </div>
         <div
           id="message"
