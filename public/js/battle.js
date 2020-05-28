@@ -42,16 +42,28 @@ const fight = async () => {
     .getElementById("myPetImg")
     .setAttribute("src", `../images/pets/stage${ourPet.stage}-behind.png`);
 
-  const opponent = await {
-    name: "Other_Pet",
-    stage: 3,
-    type: 1,
-    healthLevel: 1,
-    strengthLevel: 2,
-    speedLevel: 1,
-    strengthExp: 186,
-    healthExp: 263,
-  };
+  // const opponent = await {
+  //   name: "Other_Pet",
+  //   stage: 3,
+  //   type: 1,
+  //   healthLevel: 1,
+  //   strengthLevel: 2,
+  //   speedLevel: 1,
+  //   strengthExp: 186,
+  //   healthExp: 263,
+  // };
+
+  // Finding your opponent based on the URL parameter
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const opponentId = urlParams.get("opponent");
+
+  const rune = await fetch("api/getAllOpponents");
+  const scim = await rune.json();
+  const opponents = scim.allOpponents;
+
+  const opponent = opponents.find((dds) => dds.id.toString() === opponentId);
+  console.log(opponent);
 
   opponent.availableAttacks = getAvailableAttacks(opponent);
   opponent.hitpoints = opponent.healthLevel * 10;
@@ -69,8 +81,13 @@ const fight = async () => {
     );
 
   const refreshHitpoints = () => {
+    console.log(
+      `Opponent HP: ${opponent.hitpoints}    Your HP: ${ourPet.hitpoints}`
+    );
     const opponentHipointsPercentage =
-      opponent.hitpoints > 0 ? (opponent.hitpoints / opponent.health) * 10 : 0;
+      opponent.hitpoints > 0
+        ? (opponent.hitpoints / opponent.healthLevel) * 10
+        : 0;
     opponentHipoints.setAttribute(
       "style",
       `width: ${opponentHipointsPercentage}%;`
