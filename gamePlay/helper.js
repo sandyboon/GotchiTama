@@ -51,7 +51,7 @@ module.exports = {
 
 function createBotOpponent(attackingPet) {
   const bot = { ...attackingPet };
-  bot.name = 'ai_bot';
+  bot.name = 'Training Bot';
   bot.id = -1;
   bot.UserId = -1;
   return bot;
@@ -74,7 +74,7 @@ function changeOpponentStrength(defaultOpponent, makeStronger) {
 }
 
 function getOpponentProps() {
-  const isOpponentBetter = Math.random() >= 0.3;
+  const isOpponentBetter = Math.random() >= 0.5;
   const changeSpeed = Math.random() >= 0.8;
   const changeStrength = Math.random() >= 0.5;
   // if changeSpeed is false AND changeStrength is also false then we MUST changeHealth of the default opponent.
