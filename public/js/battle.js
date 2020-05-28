@@ -105,9 +105,16 @@ const fight = async () => {
       messageDiv.innerHTML = null;
       attacksDiv.innerHTML = null;
       if (winner === ourPet) {
-        message(`${winner.name} won the battle!`);
+        message(`${ourPet.name} won the battle!`);
         setTimeout(() => {
-          message(`${winner.name} gained 25 strength experience`);
+          message(`${ourPet.name} gained 25 strength experience`);
+
+          fetch("/api/pet", {
+            method: "put",
+            body: JSON.stringify({
+              currentStrengthExp: ourPet.currentStrengthExp + 25,
+            }),
+          });
         }, 700);
         document
           .getElementById("otherPetImg")
@@ -125,6 +132,15 @@ const fight = async () => {
         message(`Oh no, ${ourPet.name} lost the battle!`);
         setTimeout(() => {
           message(`${ourPet.name} lost 10 health experience`);
+
+          const lostHealthExp =
+            ourPet.currentHealthExp > 9 ? 10 : ourPet.currentHealthExp;
+          fetch("/api/pet", {
+            method: "put",
+            body: JSON.stringify({
+              currentHealthExp: ourPet.currentHealthExp - lostHealthExp,
+            }),
+          });
         }, 700);
         document
           .getElementById("otherPetImg")
