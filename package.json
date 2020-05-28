@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint --quiet .",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "start:dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
