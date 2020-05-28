@@ -18,7 +18,7 @@ let hungerTimer;
 let boredTimer;
 
 $(document).ready(function () {
-  setInterval(handleActivity, 30000);
+  setInterval(handleActivity, 20000);
   // Attach the event handler to the button
   feedButton.click(feedPet);
   playButton.click(playWithPet);
@@ -85,7 +85,7 @@ const messageIntoPopup = (message) => {
   popup.appendChild(newDiv);
   setTimeout(() => {
     removeFromPopup(newDiv);
-  }, 10000);
+  }, 5000);
 };
 
 function handleHunger() {
@@ -158,14 +158,14 @@ function feedPet() {
     petCurrentStage,
   } = getPetHealthStatsFromUI();
 
-  petCurrentHealthExp += 15;
+  petCurrentHealthExp += 45;
   currentHealthExp.text(petCurrentHealthExp);
   messageIntoPopup("Your feed your pet; it gains some health EXP!");
   makePetHappy();
   // update the level if required.
   if (moveToNexLevel("health", healthLevel.text(), currentHealthExp.text())) {
     // updat the UI
-    healthLevel.text(++petCurrentHealthLevel);
+    healthLevel.text(++petCurrentHealthLevel);	
     messageIntoPopup("Your pet increased one health level!");
   }
 
@@ -206,7 +206,7 @@ function playWithPet() {
     petCurrentStage,
   } = getPetSpeedStatsFromUI();
 
-  petCurrentSpeedExp += 20;
+  petCurrentSpeedExp += 40;
   messageIntoPopup("You play with your pet; it gains some speed EXP!");
   currentSpeedExp.text(petCurrentSpeedExp);
   makePetHappy();

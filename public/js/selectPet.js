@@ -21,10 +21,11 @@ function checkAndEnableDoneBtn() {
 function selectImage() {
   const previouslySelectedImg = getAlreadySelectImage();
   if (previouslySelectedImg.length > 0) {
-    previouslySelectedImg.attr(
-      'style',
-      switchSelectionStyle(previouslySelectedImg.attr('style'))
-    );
+    previouslySelectedImg.removeClass('imgSelected');
+    // previouslySelectedImg.attr(
+    //   'style',
+    //   switchSelectionStyle(previouslySelectedImg.attr('style'))
+    // );
     previouslySelectedImg.attr('data-is-selected', 'false');
   }
 
@@ -33,10 +34,11 @@ function selectImage() {
     previouslySelectedImg.attr('data-pet-type') !==
     selectedImage.attr('data-pet-type')
   ) {
-    selectedImage.attr(
-      'style',
-      switchSelectionStyle(selectedImage.attr('style'))
-    );
+    selectedImage.addClass('imgSelected');
+    // selectedImage.attr(
+    //   'style',
+    //   switchSelectionStyle(selectedImage.attr('style'))
+    // );
     selectedImage.attr('data-is-selected', 'true');
     // check if user has provided a pet name
     const petName = $('#petName').val();
@@ -46,24 +48,24 @@ function selectImage() {
   }
 }
 
-function switchSelectionStyle(selectImageStyle) {
-  selectImageStyle = selectImageStyle.includes('background-color')
-    ? removeBackGroundColor(selectImageStyle)
-    : addBackGroundColor(selectImageStyle);
+// function switchSelectionStyle(selectImageStyle) {
+//   selectImageStyle = selectImageStyle.includes('background-color')
+//     ? removeBackGroundColor(selectImageStyle)
+//     : addBackGroundColor(selectImageStyle);
 
-  return selectImageStyle;
-}
+//   return selectImageStyle;
+// }
 
-function addBackGroundColor(selectImageStyle) {
-  return selectImageStyle.concat(' background-color: #f5ec42');
-}
+// function addBackGroundColor(selectImageStyle) {
+//   return selectImageStyle.concat(' background-color: #f5ec42');
+// }
 
-function removeBackGroundColor(selectImageStyle) {
-  return selectImageStyle.slice(
-    0,
-    selectImageStyle.indexOf('background-color: #f5ec42')
-  );
-}
+// function removeBackGroundColor(selectImageStyle) {
+//   return selectImageStyle.slice(
+//     0,
+//     selectImageStyle.indexOf('background-color: #f5ec42')
+//   );
+// }
 
 function getAlreadySelectImage() {
   return $("img[data-is-selected='true']");
