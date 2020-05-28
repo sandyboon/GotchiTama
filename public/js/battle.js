@@ -7,6 +7,8 @@ const attacks = [
 
 const messageDiv = document.getElementById("message");
 const attacksDiv = document.getElementById("attacks");
+const otherPetImg = document.getElementById("otherPetImg");
+const myPetImg = document.getElementById("myPetImg");
 
 const message = (text) => {
   const newMessage = document.createElement("p");
@@ -38,9 +40,11 @@ const fight = async () => {
     "Speed: " + ourPet.speedLevel;
   document.getElementById("our-pet-strength").innerHTML =
     "Strength: " + ourPet.strengthLevel;
-  document
-    .getElementById("myPetImg")
-    .setAttribute("src", `../images/pets/stage${ourPet.stage}-behind.png`);
+  myPetImg.setAttribute(
+    "src",
+    `../images/pets/stage${ourPet.stage}-behind.png`
+  );
+  ourPet.image = myPetImg;
 
   // const opponent = await {
   //   name: "Other_Pet",
@@ -73,12 +77,11 @@ const fight = async () => {
     "Speed: " + opponent.speedLevel;
   document.getElementById("other-pet-strength").innerHTML =
     "Strength: " + opponent.strengthLevel;
-  document
-    .getElementById("otherPetImg")
-    .setAttribute(
-      "src",
-      `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
-    );
+  otherPetImg.setAttribute(
+    "src",
+    `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
+  );
+  opponent.image = otherPetImg;
 
   const refreshHitpoints = () => {
     console.log(
@@ -111,26 +114,22 @@ const fight = async () => {
 
           fetch("/api/pet", {
             method: "put",
-			headers: {
-				'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-			},
+            headers: {
+              "Content-type": "application/json; charset=UTF-8", // Indicates the content
+            },
             body: JSON.stringify({
               currentStrengthExp: ourPet.currentStrengthExp + 25,
             }),
           });
         }, 700);
-        document
-          .getElementById("otherPetImg")
-          .setAttribute(
-            "src",
-            `../images/pets/colour${opponent.type}-stage${opponent.stage}-sad.png`
-          );
-        document
-          .getElementById("myPetImg")
-          .setAttribute(
-            "src",
-            `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-happy.png`
-          );
+        otherPetImg.setAttribute(
+          "src",
+          `../images/pets/colour${opponent.type}-stage${opponent.stage}-sad.png`
+        );
+        myPetImg.setAttribute(
+          "src",
+          `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-happy.png`
+        );
       } else {
         message(`Oh no, ${ourPet.name} lost the battle!`);
         setTimeout(() => {
@@ -140,26 +139,22 @@ const fight = async () => {
             ourPet.currentHealthExp > 9 ? 10 : ourPet.currentHealthExp;
           fetch("/api/pet", {
             method: "put",
-			headers: {
-				'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
-			},
+            headers: {
+              "Content-type": "application/json; charset=UTF-8", // Indicates the content
+            },
             body: JSON.stringify({
               currentHealthExp: ourPet.currentHealthExp - lostHealthExp,
             }),
           });
         }, 700);
-        document
-          .getElementById("otherPetImg")
-          .setAttribute(
-            "src",
-            `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
-          );
-        document
-          .getElementById("myPetImg")
-          .setAttribute(
-            "src",
-            `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-sad.png`
-          );
+        otherPetImg.setAttribute(
+          "src",
+          `../images/pets/colour${opponent.type}-stage${opponent.stage}-happy.png`
+        );
+        myPetImg.setAttribute(
+          "src",
+          `../images/pets/colour${ourPet.type}-stage${ourPet.stage}-sad.png`
+        );
       }
       setTimeout(() => {
         attacksDiv.innerHTML = `<a class='button button-primary' href="/">Home</a>`;
@@ -168,6 +163,8 @@ const fight = async () => {
   };
 
   const battleTurn = (attacker, defender, attack) => {
+    myPetImg.className = "";
+    otherPetImg.className = "";
     // Function for ending turns
     const endTurn = (attacker, defender) => {
       if (defender.hitpoints < 1) return declareWinner(attacker);
@@ -243,9 +240,14 @@ const fight = async () => {
               attackStrength * Math.random() * attacker.strengthLevel + 1
             );
             defender.hitpoints -= attackDamage;
+            defender.image.classList.add(
+              "animate__animated",
+              "animate__headShake"
+            );
             refreshHitpoints();
             message(`${defender.name} was hit for ${attackDamage} HP`);
           }
+          if (attacker === ourPet) message(`------------------------------`);
         }
 
         // After delay, end the turn.
