@@ -22,6 +22,8 @@ $(document).ready(function () {
   feedButton.click(feedPet);
   playButton.click(playWithPet);
   battleButton.click(takeToBattle);
+  feedButton.attr('disabled', true);
+  playButton.attr('disabled', true);
 });
 
 function handleActivitty() {
