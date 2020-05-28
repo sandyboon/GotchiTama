@@ -111,6 +111,9 @@ const fight = async () => {
 
           fetch("/api/pet", {
             method: "put",
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+			},
             body: JSON.stringify({
               currentStrengthExp: ourPet.currentStrengthExp + 25,
             }),
@@ -137,6 +140,9 @@ const fight = async () => {
             ourPet.currentHealthExp > 9 ? 10 : ourPet.currentHealthExp;
           fetch("/api/pet", {
             method: "put",
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+			},
             body: JSON.stringify({
               currentHealthExp: ourPet.currentHealthExp - lostHealthExp,
             }),
