@@ -1,15 +1,16 @@
-<h1>This will show your pet and stats</h1>
-<a href="/selectOpponent">Select Opponent</a>
-<p id="stage">{{pet.stage}}</p>
-<h2>
+<a style="float: right" href="/api/logout">logout</a>
+<p style="display: none;">Stage: <span id="stage">{{pet.stage}}</span> type: <span id='type'>{{pet.type}}</span></p>
+<div id='popup' style='display: none;'>
+</div>
+<h4>
     {{pet.name}}
-</h2>
+</h4>
 <ul>
-    <li>Health Level : <span id="healthLevel">{{pet.healthLevel}}</span></li>
+    <li>Health Level: <span id="healthLevel">{{pet.healthLevel}}</span></li>
     <li>Health Exp: <span id="currentHealthExp">{{pet.currentHealthExp}}</span></li>
 </ul>
 <ul>
-    <li>Speed Level:<span id="speedLevel"> {{pet.speedLevel}}</span></li>
+    <li>Speed Level: <span id="speedLevel"> {{pet.speedLevel}}</span></li>
     <li>Speed Exp: <span id="currentSpeedExp">{{pet.currentSpeedExp}}</span></li>
 </ul>
 <ul>
@@ -17,10 +18,13 @@
     <li>Strength Exp: <span id="currentStrengthExp">{{pet.currentStrengthExp}}</span></li>
 </ul>
 
-<p id="type">{{pet.type}}</p>
+<div style="display: flex; justify-content: center;">
+    <img id="petImage" style="margin-bottom: 3rem; height: auto; max-width: 85%"
+        src="/images/pets/colour{{pet.type}}-stage{{pet.stage}}-happy.png" alt="pet-image">
+</div>
 
-<img id="petImage" src="/images/pets/colour{{pet.type}}-stage{{pet.stage}}-happy.png" alt="pet-image">
-
-<button id="feedButton">Feed</button>
-<button id="playButton">Play</button>
-<button id="battleButton">Battle</button>
+<div style="display: flex; justify-content: space-around;">
+    <button id="feedButton">Feed</button>
+    <button id="playButton">Play</button>
+    <button id="battleButton">Battle</button>
+</div>
